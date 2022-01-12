@@ -58,5 +58,30 @@ services:
     depends_on:
       - influxdb
 
+  bridge:
+    image: migoller/http-mqtt-bridge:latest
+    container_name: bridge_container
+    restart: always
+    ports:
+      - "5678:5000"
+    networks:
+      - iot
+    environment:
+      - AUTH_KEY=912ec803b2ce49e4a541068d495ab570
+      - MQTT_HOST=tcp://mosquitto:1883
+
+  water-system-planner:
+    image: water-system-planner
+    restart: always
+    build:
+      context: ./water-system-planner/
+      dockerfile: Dockerfile
+    volumes:
+      - /data/water-system-planner
+    ports:
+      - "8081:8081"
+    networks:
+      - iot
+
 networks:
   iot:

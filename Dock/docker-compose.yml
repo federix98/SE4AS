@@ -14,6 +14,7 @@ services:
       - iot
   water-system-planner:
     image: water-system-planner
+    container_name: MAPE_PLANNER
     build:
       context: ./water-system-planner/
       dockerfile: Dockerfile
@@ -25,6 +26,7 @@ services:
       - iot
   water-system-analyzer:
     image: water-system-analyzer
+    container_name: MAPE_ANALYZER
     build:
       context: ./water-system-analyzer/
       dockerfile: Dockerfile
@@ -51,7 +53,7 @@ services:
       - INFLUXDB_USER_PASSWORD=secretpassword
   telegraf:
     image: telegraf
-    container_name: telegraf_container
+    container_name: MAPE_MONITOR
     restart: always
     volumes:
       - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
@@ -73,6 +75,7 @@ services:
     
   zone:
     image: zone-simulator
+    container_name: zone_simulator
     build:
       context: ./zone-simulator/
       dockerfile: Dockerfile

@@ -1,0 +1,12 @@
+/Users/federico/Desktop/Università/Software Engineering for Autonomous Systems/Progetto/SE4AS/Dock/water-system-analyzer/src/main/java/it/univaq/seas/dao/ZoneDao.java
+/Users/federico/Desktop/Università/Software Engineering for Autonomous Systems/Progetto/SE4AS/Dock/water-system-analyzer/src/main/java/it/univaq/seas/App.java
+/Users/federico/Desktop/Università/Software Engineering for Autonomous Systems/Progetto/SE4AS/Dock/water-system-analyzer/src/main/java/it/univaq/seas/dao/WaterRequirementDao.java
+/Users/federico/Desktop/Università/Software Engineering for Autonomous Systems/Progetto/SE4AS/Dock/water-system-analyzer/src/main/java/it/univaq/seas/daoImpl/ZoneDaoImpl.java
+/Users/federico/Desktop/Università/Software Engineering for Autonomous Systems/Progetto/SE4AS/Dock/water-system-analyzer/src/main/java/it/univaq/seas/dao/OutputTankDao.java
+/Users/federico/Desktop/Università/Software Engineering for Autonomous Systems/Progetto/SE4AS/Dock/water-system-analyzer/src/main/java/it/univaq/seas/scheduler/AnalyzerScheduler.java
+/Users/federico/Desktop/Università/Software Engineering for Autonomous Systems/Progetto/SE4AS/Dock/water-system-analyzer/src/main/java/it/univaq/seas/dao/TankLevelDao.java
+/Users/federico/Desktop/Università/Software Engineering for Autonomous Systems/Progetto/SE4AS/Dock/water-system-analyzer/src/main/java/it/univaq/seas/utils/Utils.java
+/Users/federico/Desktop/Università/Software Engineering for Autonomous Systems/Progetto/SE4AS/Dock/water-system-analyzer/src/main/java/it/univaq/seas/daoImpl/InfluxdbConnection.java
+/Users/federico/Desktop/Università/Software Engineering for Autonomous Systems/Progetto/SE4AS/Dock/water-system-analyzer/src/main/java/it/univaq/seas/dao/InputTankDao.java
+/Users/federico/Desktop/Università/Software Engineering for Autonomous Systems/Progetto/SE4AS/Dock/water-system-analyzer/src/main/java/it/univaq/seas/dao/TankCapacityDao.java
+/Users/federico/Desktop/Università/Software Engineering for Autonomous Systems/Progetto/SE4AS/Dock/water-system-analyzer/src/main/java/it/univaq/seas/job/CheckTankIsFull.java

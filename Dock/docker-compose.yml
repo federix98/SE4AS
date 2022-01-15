@@ -19,8 +19,6 @@ services:
       - "8086:8086"
     networks:
       - iot
-    volumes:
-      - influxdb-data:/var/lib/influxdb
   
   telegraf:
     image: telegraf

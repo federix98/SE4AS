@@ -42,8 +42,6 @@ services:
       - "8086:8086"
     networks:
       - iot
-    volumes:
-      - ./influxdb_data:/var/lib/influxdb
     environment:
       - INFLUXDB_DB=telegraf
       - INFLUXDB_ADMIN_ENABLED=true
@@ -73,5 +71,19 @@ services:
     depends_on:
       - influxdb
     
+  zone:
+    image: zone-simulator
+    build:
+      context: ./zone-simulator/
+      dockerfile: Dockerfile
+    volumes:
+      - /data/zone-simulator
+    networks:
+      - iot
+    depends_on:
+      - mosquitto
+    restart: always
+
+  
 networks:
   iot:

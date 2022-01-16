@@ -25,11 +25,36 @@ public class ZoneSimulator implements Runnable {
 	private Integer zoneId = null;
 	private boolean stop = false;
 	private Integer interval = 10000;
+	private Boolean active = null;
 	
 	MqttClient client;
-	
+
+	public Integer getZoneId() {
+		return zoneId;
+	}
+
+	public void setZoneId(Integer zoneId) {
+		this.zoneId = zoneId;
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+
+	public MqttClient getClient() {
+		return client;
+	}
+
+	public void setClient(MqttClient client) {
+		this.client = client;
+	}
+
 	public ZoneSimulator(Integer zoneId, String zoneName, Integer tankInput, Integer tankFillLevel, Integer tankCapacity,
-			Integer numHouse, Integer squareMeters) {
+						 Integer numHouse, Integer squareMeters) {
 		super();
 		this.zoneId = zoneId;
 		this.setZoneName(zoneName);
@@ -38,6 +63,7 @@ public class ZoneSimulator implements Runnable {
 		this.tankCapacity = tankCapacity;
 		this.numHouse = numHouse;
 		this.squareMeters = squareMeters;
+		this.active = true;
 	}
 	
 	

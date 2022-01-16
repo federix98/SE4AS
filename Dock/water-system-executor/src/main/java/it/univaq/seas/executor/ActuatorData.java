@@ -3,6 +3,10 @@ package it.univaq.seas.executor;
 import java.util.HashMap;
 import java.util.Map;
 
+
+/**
+ * @author federico
+ */
 public class ActuatorData {
 
     private Map<String, String> data = null;
@@ -20,6 +24,7 @@ public class ActuatorData {
     }
 
     public Map<String, String> getData() {
+        System.out.println(data.toString());
         return data;
     }
 

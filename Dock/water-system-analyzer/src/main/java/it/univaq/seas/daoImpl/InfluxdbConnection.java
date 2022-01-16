@@ -5,16 +5,8 @@
  */
 package it.univaq.seas.daoImpl;
 
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-import org.influxdb.BatchOptions;
 import org.influxdb.InfluxDB;
 import org.influxdb.InfluxDBFactory;
-import org.influxdb.dto.Point;
-import org.influxdb.dto.Query;
-import org.influxdb.dto.QueryResult;
-import org.influxdb.dto.QueryResult.Result;
-import org.influxdb.dto.QueryResult.Series;
 
 /**
  *

@@ -31,10 +31,10 @@ public class ZoneDaoImpl implements ZoneDao {
         
         InfluxDB influxDBConnection = InfluxDBFactory.connect(serverURL, username, password);
         
-        String command = "SELECT last(\"tank_level\") FROM zone WHERE \"tank_level\" >= " 
-                + String.valueOf(tank_level) + " GROUP BY  \"topic\" ";
+        String command = "SELECT last(\"TankFillLevel\") FROM zone WHERE \"TankFillLevel\" >= " 
+                + String.valueOf(tank_level) + " active = True GROUP BY  \"topic\" ";
         
-        
+        System.out.println(command);
         Query query = new Query(command, "telegraf");
        
         List<String> topics = new ArrayList<>();

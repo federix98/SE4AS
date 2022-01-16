@@ -25,7 +25,7 @@ public class ZoneSimulator implements Runnable {
 	private Integer zoneId = null;
 	private boolean stop = false;
 	private Integer interval = 10000;
-	private Boolean active = null;
+	private Integer active = null;
 	
 	MqttClient client;
 
@@ -37,11 +37,11 @@ public class ZoneSimulator implements Runnable {
 		this.zoneId = zoneId;
 	}
 
-	public Boolean getActive() {
+	public Integer getActive() {
 		return active;
 	}
 
-	public void setActive(Boolean active) {
+	public void setActive(Integer active) {
 		this.active = active;
 	}
 
@@ -63,7 +63,7 @@ public class ZoneSimulator implements Runnable {
 		this.tankCapacity = tankCapacity;
 		this.numHouse = numHouse;
 		this.squareMeters = squareMeters;
-		this.active = true;
+		this.active = 1;
 	}
 	
 	

@@ -1,2 +1,3 @@
 it/univaq/seas/zonesimulator/ZoneSimulator.class
-it/univaq/seas/run/Main.class
+it/univaq/seas/zonesimulator/ZoneController.class
+it/univaq/seas/zonesimulator/Main.class

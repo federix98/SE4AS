@@ -6,19 +6,27 @@
 package it.univaq.disim.seas.watersystemplanner;
 
 import org.springframework.web.bind.annotation.GetMapping;
-
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  *
  * @author valerio
  *
- **/
+ *
+ */
 @org.springframework.web.bind.annotation.RestController
 public class RestController {
-    
+
     @GetMapping("/")
-	public String greeting() {
-		return "Hello cazzone 12";
-	}
-    
+    public String greeting() {
+        return "Hello cazzone 12";
+    }
+
+    @PostMapping("/message")
+    public String message(@RequestBody String body) {
+        System.out.println(body);
+        return body;
+    }
+
 }

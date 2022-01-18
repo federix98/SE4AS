@@ -14,4 +14,6 @@ public interface ZoneService {
     public void checkTankLevelIsUpTo(int tankLevel);
     
     public void checkTankLevelIsDownTo(int tankLevel);
+
+    public void consumptionAdaptation();
 }

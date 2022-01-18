@@ -13,7 +13,11 @@ import org.json.JSONTokener;
 import sun.rmi.runtime.Log;
 
 public class ZoneSimulator implements Runnable, MqttCallback {
-	
+
+	private String DockerURL = "tcp://mosquitto:1883";
+	private String LocalURL = "tcp://localhost:1883";
+	private String serverURI;
+
 	// Tank Data
 	private Integer tankOutput = null;
 	private Integer tankInput = null;
@@ -52,11 +56,20 @@ public class ZoneSimulator implements Runnable, MqttCallback {
 		this.active = active;
 	}
 
-	public ZoneSimulator(Integer zoneId, String zoneName, Integer tankInput, Integer tankFillLevel, Integer tankCapacity,
+	public Integer getTotalDemand() {
+		return totalDemand;
+	}
+
+	public void setTotalDemand(Integer totalDemand) {
+		this.totalDemand = totalDemand;
+	}
+
+	public ZoneSimulator(Integer zoneId, String zoneName, Integer tankInput, Integer tankOutput, Integer tankFillLevel, Integer tankCapacity,
 						 Integer numHouse, Integer squareMeters) {
 		super();
 		this.zoneId = zoneId;
 		this.setZoneName(zoneName);
+		this.tankOutput = tankOutput;
 		this.tankInput = tankInput;
 		this.tankFillLevel = tankFillLevel;
 		this.tankCapacity = tankCapacity;
@@ -64,19 +77,25 @@ public class ZoneSimulator implements Runnable, MqttCallback {
 		this.squareMeters = squareMeters;
 		this.active = 1;
 
-		this.totalDemand = calculateDemand();
-
 		try {
 			this.reflectionMap = buildReflectionMap();
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();
 		}
 
+		//this.serverURI = DockerURL;
+		this.serverURI = LocalURL;
+
+		this.totalDemand = calculateDemand();
+
 		connectAndSubscribe();
 	}
 
 	private int calculateDemand() {
-		return this.numHouse * new Random().nextInt(5) + 10;
+		if (this.numHouse == null) {
+			return 0;
+		}
+		return this.numHouse * (new Random().nextInt(5) + 10);
 	}
 
 	private void selectMethod(String field, Integer value) {
@@ -204,7 +223,7 @@ public class ZoneSimulator implements Runnable, MqttCallback {
 
 	public void connectAndSubscribe() {
 		try {
-			actingClient = new MqttClient("tcp://mosquitto:1883", "zone" + this.zoneId + "_acting_client");
+			actingClient = new MqttClient(this.serverURI, "zone" + this.zoneId + "_acting_client");
 
 			actingClient.setCallback(this);
 			actingClient.connect();
@@ -251,7 +270,7 @@ public class ZoneSimulator implements Runnable, MqttCallback {
 	
 	public void publish(String data) {
 	    try {
-			sensingClient = new MqttClient("tcp://mosquitto:1883", "zone" + this.zoneId + "_sensing_client");
+			sensingClient = new MqttClient(this.serverURI, "zone" + this.zoneId + "_sensing_client");
 			sensingClient.connect();
 			MqttMessage message = new MqttMessage();
 			message.setPayload(data.getBytes());

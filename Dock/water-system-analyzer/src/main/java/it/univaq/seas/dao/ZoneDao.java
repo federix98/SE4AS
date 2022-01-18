@@ -42,6 +42,6 @@ public interface ZoneDao {
     
     public List<String> getAllZoneNameThatAreSendInformatioUpto(Date date);
     
-    
+    public int checkConsumptionAdaptation();
     
 }

@@ -59,4 +59,30 @@ public class ZoneServiceImpl implements ZoneService {
         }
     }
 
+    @Override
+    public void consumptionAdaptation() {
+
+        /**
+         * Si attiva solo quando la totaldemand di qualcuno supera il tankOutput
+         */
+
+        int val = dao.checkConsumptionAdaptation();
+        if (val != 0) {
+            System.out.println("Need to adapt the consumption of the zones");
+            SymptomsMessage message = new SymptomsMessage();
+            message.setSymptomId(SymptomId.CONSUMPTION_ADAPTATION_REQURIED);
+            message.setAlertValue(val);
+            message.setZones(null);
+
+
+            String jsonMessage = Utils.convertMessageToJSONString(message);
+
+            SimpleHttpConnection.invoke(jsonMessage, "http://localhost:8081/consumptionAdaptation");
+        }
+        else {
+            System.out.println("No need for adaptation of the consumption");
+        }
+
+    }
+
 }

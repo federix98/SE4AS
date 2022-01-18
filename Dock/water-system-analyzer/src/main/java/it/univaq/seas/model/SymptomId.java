@@ -12,6 +12,6 @@ package it.univaq.seas.model;
 public enum SymptomId {
     TANK_UP_TO_WARNING_LEVEL,
     TANK_DOWN_WARNING_LEVEL,
-    
+    CONSUMPTION_ADAPTATION_REQURIED,
     
 }

@@ -14,7 +14,8 @@ public class App {
     public static void main(String[] args) {
         System.out.println("Hello World!");
         ZoneService service = new ZoneServiceImpl();
-        service.checkTankLevelIsDownTo(200);
+        //service.checkTankLevelIsDownTo(200);
+        service.consumptionAdaptation();
 
     }
 }

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package it.univaq.seas.daoImpl;
+package it.univaq.disim.seas.watersystemplanner.daoImpl;
 
 import org.influxdb.InfluxDB;
 import org.influxdb.InfluxDBFactory;

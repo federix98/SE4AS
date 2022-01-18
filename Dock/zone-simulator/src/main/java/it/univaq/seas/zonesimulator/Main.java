@@ -11,12 +11,12 @@ public class Main {
 
     public static void main( String[] args) {
         Map<String, ZoneSimulator> zones = new HashMap<String, ZoneSimulator>();
-        zones.put("MainPipe", new ZoneSimulator(0, "MainPipe", 5000, null, null, null, null));
-        zones.put("Zone1", new ZoneSimulator(1, "Zone1", 50, 100, 100, 7, 50));
-        zones.put("Zone2", new ZoneSimulator(2, "Zone2", 60, 100, 100, 4, 70));
-        zones.put("Zone3", new ZoneSimulator(3, "Zone3", 30, 100, 100, 67, 400));
-        zones.put("Zone4", new ZoneSimulator(4, "Zone4", 60, 100, 100, 100, 500));
-        zones.put("Zone5", new ZoneSimulator(5, "Zone5", 70, 100, 100, 23, 400));
+        zones.put("MainPipe", new ZoneSimulator(0, "MainPipe", 5000, 5000, null, null, null, null));
+        zones.put("Zone1", new ZoneSimulator(1, "Zone1", 50, 45, 100, 100, 7, 50));
+        zones.put("Zone2", new ZoneSimulator(2, "Zone2", 60, 55, 100, 100, 4, 70));
+        zones.put("Zone3", new ZoneSimulator(3, "Zone3", 30, 35, 100, 100, 67, 400));
+        zones.put("Zone4", new ZoneSimulator(4, "Zone4", 60, 55, 100, 100, 450, 500));
+        zones.put("Zone5", new ZoneSimulator(5, "Zone5", 70, 65, 100, 100, 23, 400));
 
 
         List<Thread> threads = new ArrayList<Thread>();

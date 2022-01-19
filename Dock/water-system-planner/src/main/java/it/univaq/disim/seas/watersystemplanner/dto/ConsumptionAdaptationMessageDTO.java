@@ -1,5 +1,8 @@
 package it.univaq.disim.seas.watersystemplanner.dto;
 
+/**
+ * @author federico
+ */
 public class ConsumptionAdaptationMessageDTO {
 
     private String symptomId;

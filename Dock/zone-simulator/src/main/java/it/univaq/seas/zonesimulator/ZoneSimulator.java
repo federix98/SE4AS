@@ -33,7 +33,7 @@ public class ZoneSimulator implements Runnable, MqttCallback {
 	private String zoneName = "";
 	private Integer zoneId = null;
 	private boolean stop = false;
-	private Integer interval = 10000;
+	private Integer interval = 100000;
 	private Integer active = null;
 
 	Map<String, Method> reflectionMap = null;
@@ -245,12 +245,20 @@ public class ZoneSimulator implements Runnable, MqttCallback {
 			System.out.println(data);
 			//String topub = "tank_level value=".concat(data.get("tankOutput").toString());
 			publish(data.toString());
-			try {
+
+			long current = System.currentTimeMillis();
+			long start = current;
+			long now = System.currentTimeMillis();
+
+			while ((now - start) < interval) {
+				now = System.currentTimeMillis();
+			}
+			/*try {
 				Thread.sleep(interval);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			}*/
 			this.totalDemand = calculateDemand();
 		}
 		

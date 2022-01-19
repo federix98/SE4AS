@@ -17,6 +17,7 @@ import javax.print.attribute.HashAttributeSet;
 /**
  *
  * @author valerio
+ * @author federico
  */
 public class WaterService {
 
@@ -63,6 +64,7 @@ public class WaterService {
             local.setNewTankOutput(ottimaOutput.get(zone));
             local.setNewTankInput(0);
             local.setZoneId(zone.getId());
+            local.setTopic(zone.getTopic());
             results.add(local);
         }
         return results;

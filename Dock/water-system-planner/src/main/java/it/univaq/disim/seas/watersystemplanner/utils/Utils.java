@@ -9,6 +9,9 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.util.List;
 
+/**
+ * @author federico
+ */
 public class Utils {
 
     public static String convertMessageToJSONString(List<ZoneUpdate> zones){

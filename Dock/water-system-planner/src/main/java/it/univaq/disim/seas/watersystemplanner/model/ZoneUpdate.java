@@ -1,10 +1,22 @@
 package it.univaq.disim.seas.watersystemplanner.model;
 
+/**
+ * @author federico
+ */
 public class ZoneUpdate {
 
     private int newTankInput;
     private int newTankOutput;
     private int zoneId;
+    private String topic;
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
+    }
 
     public int getZoneId() {
         return zoneId;

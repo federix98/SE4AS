@@ -31,7 +31,7 @@ public class RestController {
 
     @GetMapping("/")
     public String greeting() {
-        return "Hello cazzone 12";
+        return "Root";
     }
 
     @PostMapping("/message")
@@ -42,6 +42,8 @@ public class RestController {
 
     @PostMapping("/consumptionAdaptation")
     public String consumptionAdaptation(@RequestBody ConsumptionAdaptationMessageDTO message) {
+
+        boolean DOCKERIZE = true;
 
         // Retrieve zone data
         List<ZoneData> zones = new ZoneDaoImpl().getZoneData();
@@ -56,7 +58,7 @@ public class RestController {
 
         System.out.println(jsonMessage);
 
-        Utils.mqttPublish(jsonMessage);
+        Utils.mqttPublish(jsonMessage, DOCKERIZE);
 
         return "Adaptation planned";
     }

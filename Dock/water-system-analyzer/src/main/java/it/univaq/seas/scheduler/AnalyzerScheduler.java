@@ -6,6 +6,8 @@
 package it.univaq.seas.scheduler;
 
 import it.univaq.seas.job.CheckTankIsFull;
+import it.univaq.seas.job.ConsumptionAdaptation;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -15,11 +17,14 @@ import java.util.TimerTask;
  */
 public class AnalyzerScheduler {
   
-    public static void scedulle() {
+    public static void scedule() {
         Timer timer = new Timer();
-        TimerTask task1 = new CheckTankIsFull();
+        //TimerTask task1 = new CheckTankIsFull();
+        TimerTask consumptionAdaptationTask = new ConsumptionAdaptation();
+
+        timer.scheduleAtFixedRate(consumptionAdaptationTask, 0, 10000);
         
-        timer.scheduleAtFixedRate(task1, 0, 10000);
+        //timer.scheduleAtFixedRate(task1, 0, 10000);
     }
 
 

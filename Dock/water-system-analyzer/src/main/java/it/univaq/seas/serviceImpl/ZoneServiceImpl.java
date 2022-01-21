@@ -16,11 +16,14 @@ import java.util.List;
 
 /**
  *
+ * @author federico
  * @author valerio
  */
 public class ZoneServiceImpl implements ZoneService {
 
     private ZoneDao dao = new ZoneDaoImpl();
+    private String DOCKERURL = "http://water-system-planner:8081/consumptionAdaptation";
+    private String LOCALURL = "http://localhost:8081/consumptionAdaptation";
 
     @Override
     public void checkTankLevelIsUpTo(int tankLevel) {
@@ -77,7 +80,7 @@ public class ZoneServiceImpl implements ZoneService {
 
             String jsonMessage = Utils.convertMessageToJSONString(message);
 
-            SimpleHttpConnection.invoke(jsonMessage, "http://localhost:8081/consumptionAdaptation");
+            SimpleHttpConnection.invoke(jsonMessage, DOCKERURL);
         }
         else {
             System.out.println("No need for adaptation of the consumption");

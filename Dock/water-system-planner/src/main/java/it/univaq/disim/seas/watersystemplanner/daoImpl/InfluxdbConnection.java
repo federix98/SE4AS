@@ -21,7 +21,7 @@ public class InfluxdbConnection {
     protected InfluxDB influxDBConnection;
 
     public InfluxdbConnection() {
-        String serverURL = urlLocalhost, username = "telegraf", password = "secretpassword";
+        String serverURL = urlDocker, username = "telegraf", password = "secretpassword";
         this.influxDBConnection = InfluxDBFactory.connect(serverURL, username, password);
     }
 

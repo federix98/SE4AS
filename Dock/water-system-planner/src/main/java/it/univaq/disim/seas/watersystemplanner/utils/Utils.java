@@ -24,9 +24,10 @@ public class Utils {
         return null;
     }
 
-    public static void mqttPublish(String data) {
+    public static void mqttPublish(String data, boolean DOCKERIZE) {
         try {
-            MqttClient sensingClient = new MqttClient("tcp://localhost:1883", "water-system-planner");
+            String serverURI = (DOCKERIZE) ? "tcp://mosquitto:1883" : "tcp://localhost:1883";
+            MqttClient sensingClient = new MqttClient(serverURI, "water-system-planner");
             sensingClient.connect();
             MqttMessage message = new MqttMessage();
             message.setPayload(data.getBytes());

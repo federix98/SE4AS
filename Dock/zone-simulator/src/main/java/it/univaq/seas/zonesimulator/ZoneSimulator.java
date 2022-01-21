@@ -33,7 +33,7 @@ public class ZoneSimulator implements Runnable, MqttCallback {
 	private String zoneName = "";
 	private Integer zoneId = null;
 	private boolean stop = false;
-	private Integer interval = 100000;
+	private Integer interval = 10000;
 	private Integer active = null;
 
 	Map<String, Method> reflectionMap = null;

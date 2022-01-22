@@ -3,13 +3,13 @@ package it.univaq.disim.seas.watersystemplanner.dto;
 /**
  * @author federico
  */
-public class ConsumptionAdaptationMessageDTO {
+public class AdaptationMessageDTO {
 
     private String symptomId;
     private int alertValue;
     private Object zones;
 
-    public ConsumptionAdaptationMessageDTO() {
+    public AdaptationMessageDTO() {
 
     }
 

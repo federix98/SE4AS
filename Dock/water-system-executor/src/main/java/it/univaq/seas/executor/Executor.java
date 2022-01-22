@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * @author federico
  */
-public class Executor implements Runnable, MqttCallback {
+public class Executor implements MqttCallback {
 
     private MqttClient plannerClient = null;
     private MqttClient systemClient = null;
@@ -50,12 +50,12 @@ public class Executor implements Runnable, MqttCallback {
         }
 
         stop = false;
-        myThread = new Thread(this);
-        myThread.start();
 
         this.systemClient = new MqttClient(this.url, "Executor_SystemClient");
         this.plannerClient = new MqttClient(this.url, "Executor_PlannerClient");
 
+
+        systemClient.connect();
         connectAndSubscribe();
     }
 
@@ -64,11 +64,9 @@ public class Executor implements Runnable, MqttCallback {
 
     private void publish(String topic, String data) {
         try {
-            systemClient.connect();
             MqttMessage message = new MqttMessage();
             message.setPayload(data.getBytes());
             systemClient.publish(topic, message);// + this.zoneName, message);
-            systemClient.disconnect();
         } catch (MqttException e) {
             e.printStackTrace();
         }
@@ -86,6 +84,31 @@ public class Executor implements Runnable, MqttCallback {
         }
     }
 
+    private void publishParameterValues(JSONObject jsonObj, String parameter, String value) {
+
+        System.out.println(parameter + jsonObj.get(parameter));
+        Object parame = jsonObj.get(parameter);
+
+        System.out.println(parame.toString());
+
+        if(parame.toString().equals("null")) return;
+
+        if (parame != null) {
+            System.out.println("IN");
+            ActingData toSend = new ActingData();
+            toSend.setParameter(parameter);
+            toSend.setValue(jsonObj.getInt(value));
+            //toPub = new JSONObject(toSend).toString();
+            //toPub = "{\"parameter\": " + jsonobj.getInt("newTankInput") + ", value: " + jsonobj.getInt(\"newTankInput\") + \"}";
+            String toPub = new JSONObject(toSend).toString();
+            publish(jsonObj.getString("topic").replace("sensing", "acting"), toPub);
+            System.out.println("PUBLISHED " + toPub);
+        }
+
+        System.out.println(parameter + jsonObj.get(parameter));
+
+    }
+
     private JSONObject execute(String s) {
 
         //System.out.println("SXXX");
@@ -97,57 +120,22 @@ public class Executor implements Runnable, MqttCallback {
         for (Object obj : arrJSON) {
 
             JSONObject jsonobj = (JSONObject) obj;
-            System.out.println(jsonobj.getString("topic"));
+            //System.out.println(jsonobj.getString("topic"));
 
-
-            ActingData toSend = null;
-            String toPub = "";
-
-            toSend = new ActingData();
-
-
-            toSend.setParameter("tankInput");
-            toSend.setValue(jsonobj.getInt("newTankInput"));
-            //toPub = new JSONObject(toSend).toString();
-            //toPub = "{\"parameter\": " + jsonobj.getInt("newTankInput") + ", value: " + jsonobj.getInt(\"newTankInput\") + \"}";
-            toPub = new JSONObject(toSend).toString();
-            publish(jsonobj.getString("topic").replace("sensing", "acting"), toPub);
-
-
-            toSend.setParameter("tankOutput");
-            toSend.setValue(jsonobj.getInt("newTankOutput"));
-            //toPub = new JSONObject(toSend).toString();
-            //toPub = "{\"parameter\": " + jsonobj.getInt("newTankInput") + ", value: " + jsonobj.getInt(\"newTankInput\") + \"}";
-            toPub = new JSONObject(toSend).toString();
-            publish(jsonobj.getString("topic").replace("sensing", "acting"), toPub);
+            publishParameterValues(jsonobj, "tankInput", "tankInput");
+            publishParameterValues(jsonobj, "tankOutput", "tankOutput");
+            publishParameterValues(jsonobj, "active", "active");
 
         }
 
         //System.out.println(s.toString());
 
-        ActuatorData toSend = new ActuatorData();
-        toSend.insertData("testfield1", "10");
-        toSend.insertData("testfield2", "34");
-        toSend.insertData("testfield3", "re34");
-        JSONObject data = new JSONObject(toSend);
-        return data;
-    }
-
-    @Override
-    public void run() {
-
-        while(!this.stop) {
-
-
-            System.out.println("Executor listening");
-            try {
-                Thread.sleep(100000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-
+        //ActuatorData toSend = new ActuatorData();
+        //toSend.insertData("testfield1", "10");
+        //toSend.insertData("testfield2", "34");
+        //toSend.insertData("testfield3", "re34");
+        //JSONObject data = new JSONObject(toSend);
+        return null;
     }
 
     public void stop() {

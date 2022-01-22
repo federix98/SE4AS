@@ -1,6 +1,7 @@
 package it.univaq.seas.zonesimulator;
 
 import it.univaq.seas.zonesimulator.ZoneSimulator;
+import org.eclipse.paho.client.mqttv3.MqttException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,21 +12,23 @@ public class Main {
 
     public static void main( String[] args) {
         Map<String, ZoneSimulator> zones = new HashMap<String, ZoneSimulator>();
-        zones.put("MainPipe", new ZoneSimulator(0, "MainPipe", 5000, 5000, null, null, null, null));
-        zones.put("Zone1", new ZoneSimulator(1, "Zone1", 50, 45, 100, 100, 7, 50));
-        zones.put("Zone2", new ZoneSimulator(2, "Zone2", 60, 55, 100, 100, 4, 70));
-        zones.put("Zone3", new ZoneSimulator(3, "Zone3", 30, 35, 100, 100, 67, 400));
-        zones.put("Zone4", new ZoneSimulator(4, "Zone4", 60, 55, 100, 100, 450, 500));
-        zones.put("Zone5", new ZoneSimulator(5, "Zone5", 70, 65, 100, 100, 23, 400));
+        try {
+            zones.put("MainPipe", new ZoneSimulator(0, "MainPipe", 5000, 5000, null, null, null, null, 1));
+            zones.put("Zone1", new ZoneSimulator(1, "Zone1", 50, 45, 0, 100, 7, 50, 1));
+            zones.put("Zone2", new ZoneSimulator(2, "Zone2", 60, 55, 0, 100, 4, 70, 1));
+            zones.put("Zone3", new ZoneSimulator(3, "Zone3", 30, 35, 100, 100, 67, 400, 1));
+            zones.put("Zone4", new ZoneSimulator(4, "Zone4", 60, 55, 50, 100, 450, 500, 1));
+            zones.put("Zone5", new ZoneSimulator(5, "Zone5", 70, 65, 70, 100, 23, 400, 1));
+            zones.put("Zone6", new ZoneSimulator(6, "Zone6", 50, 95, 100, 100, 23, 400, 0));
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
 
 
         List<Thread> threads = new ArrayList<Thread>();
-        threads.add(new Thread(zones.get("MainPipe")));
-        threads.add(new Thread(zones.get("Zone1")));
-        threads.add(new Thread(zones.get("Zone2")));
-        threads.add(new Thread(zones.get("Zone3")));
-        threads.add(new Thread(zones.get("Zone4")));
-        threads.add(new Thread(zones.get("Zone5")));
+        for (String key : zones.keySet()) {
+            threads.add(new Thread(zones.get(key)));
+        }
 
         for(Thread t : threads) {
             t.start();

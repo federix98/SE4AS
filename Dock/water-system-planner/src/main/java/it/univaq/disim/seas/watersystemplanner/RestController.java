@@ -7,17 +7,16 @@ package it.univaq.disim.seas.watersystemplanner;
 
 import it.univaq.disim.seas.watersystemplanner.controller.WaterService;
 import it.univaq.disim.seas.watersystemplanner.daoImpl.ZoneDaoImpl;
-import it.univaq.disim.seas.watersystemplanner.dto.ConsumptionAdaptationMessageDTO;
+import it.univaq.disim.seas.watersystemplanner.dto.AdaptationMessageDTO;
 import it.univaq.disim.seas.watersystemplanner.model.ZoneData;
+import it.univaq.disim.seas.watersystemplanner.model.ZoneParameter;
 import it.univaq.disim.seas.watersystemplanner.model.ZoneUpdate;
 import it.univaq.disim.seas.watersystemplanner.utils.Utils;
-import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,6 +27,8 @@ import java.util.List;
  */
 @org.springframework.web.bind.annotation.RestController
 public class RestController {
+
+    private boolean DOCKERIZE = false;
 
     @GetMapping("/")
     public String greeting() {
@@ -41,9 +42,7 @@ public class RestController {
     }
 
     @PostMapping("/consumptionAdaptation")
-    public String consumptionAdaptation(@RequestBody ConsumptionAdaptationMessageDTO message) {
-
-        boolean DOCKERIZE = true;
+    public String consumptionAdaptation(@RequestBody AdaptationMessageDTO message) {
 
         // Retrieve zone data
         List<ZoneData> zones = new ZoneDaoImpl().getZoneData();
@@ -51,16 +50,51 @@ public class RestController {
 
         System.out.println(mainBaseWater);
 
-        List<ZoneUpdate> results = WaterService.waterConsumptionPolicy(zones, mainBaseWater);
+        List<ZoneData> results = WaterService.waterConsumptionPolicy(zones, mainBaseWater);
+
+        List<ZoneData> toWrite = new ArrayList<ZoneData>();
+
+        for (ZoneData res : results) {
+            ZoneData local = new ZoneData();
+            local.setId(res.getId());
+            local.setTankOutput(res.getTankOutput());
+            local.setTopic(res.getTopic());
+            toWrite.add(local);
+        }
+
+        String jsonMessage = Utils.convertMessageToJSONString(toWrite);
+
+        System.out.println("WATER CONSUMPTION POLICY" + jsonMessage);
+
+        Utils.mqttPublish(jsonMessage, DOCKERIZE);
+
+        return "Consumption Adaptation planned";
+    }
+
+    @PostMapping("/maintenance")
+    public String maintenanceAdaptation(@RequestBody AdaptationMessageDTO message) {
+        // Retrieve zone data
+        List<ZoneData> zones = new ZoneDaoImpl().getZoneData();
 
 
-        String jsonMessage = Utils.convertMessageToJSONString(results);
+        List<ZoneData> results = WaterService.waterMaintainancePolicy(zones, (List<String>) message.getZones());
+
+        List<ZoneData> toWrite = new ArrayList<ZoneData>();
+
+        for (ZoneData res : results) {
+            ZoneData local = new ZoneData();
+            local.setId(res.getId());
+            local.setActive(res.getActive());
+            local.setTopic(res.getTopic());
+            toWrite.add(local);
+        }
+
+        String jsonMessage = Utils.convertMessageToJSONString(toWrite);
 
         System.out.println(jsonMessage);
 
         Utils.mqttPublish(jsonMessage, DOCKERIZE);
-
-        return "Adaptation planned";
+        return "Maintenance adaptation planned";
     }
 
 

@@ -65,7 +65,7 @@ public class ZoneSimulator implements Runnable, MqttCallback {
 	}
 
 	public ZoneSimulator(Integer zoneId, String zoneName, Integer tankInput, Integer tankOutput, Integer tankFillLevel, Integer tankCapacity,
-						 Integer numHouse, Integer squareMeters) {
+						 Integer numHouse, Integer squareMeters, Integer active) throws MqttException {
 		super();
 		this.zoneId = zoneId;
 		this.setZoneName(zoneName);
@@ -75,7 +75,7 @@ public class ZoneSimulator implements Runnable, MqttCallback {
 		this.tankCapacity = tankCapacity;
 		this.numHouse = numHouse;
 		this.squareMeters = squareMeters;
-		this.active = 1;
+		this.active = active;
 
 		try {
 			this.reflectionMap = buildReflectionMap();
@@ -87,6 +87,9 @@ public class ZoneSimulator implements Runnable, MqttCallback {
 		this.serverURI = LocalURL;
 
 		this.totalDemand = calculateDemand();
+
+		sensingClient = new MqttClient(this.serverURI, "zone" + this.zoneId + "_sensing_client");
+		sensingClient.connect();
 
 		connectAndSubscribe();
 	}
@@ -260,6 +263,7 @@ public class ZoneSimulator implements Runnable, MqttCallback {
 				e.printStackTrace();
 			}*/
 			this.totalDemand = calculateDemand();
+			if (this.tankFillLevel > 0) this.tankFillLevel = this.tankFillLevel - (new Random().nextInt(3));
 		}
 		
 	}
@@ -278,12 +282,10 @@ public class ZoneSimulator implements Runnable, MqttCallback {
 	
 	public void publish(String data) {
 	    try {
-			sensingClient = new MqttClient(this.serverURI, "zone" + this.zoneId + "_sensing_client");
-			sensingClient.connect();
+
 			MqttMessage message = new MqttMessage();
 			message.setPayload(data.getBytes());
 			sensingClient.publish("home/sensing/zone" + this.zoneId, message);// + this.zoneName, message);
-			sensingClient.disconnect();
 	    } catch (MqttException e) {
 			e.printStackTrace();
 	    }

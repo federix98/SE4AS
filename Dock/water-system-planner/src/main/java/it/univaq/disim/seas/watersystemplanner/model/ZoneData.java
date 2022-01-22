@@ -10,50 +10,33 @@ package it.univaq.disim.seas.watersystemplanner.model;
  * @author valerio
  */
 public class ZoneData {
-    private int id;
-    private int demand;
-    private int numHouse;
+    private Integer id;
+    private Integer demand;
+    private Integer numHouse;
     private String topic;
-    private int tankInput;
-    private int tankOutput;
+    private Integer tankInput;
 
-    public int getTankOutput() {
-        return tankOutput;
-    }
-
-    public void setTankOutput(int tankOutput) {
-        this.tankOutput = tankOutput;
-    }
-
-    public int getTankInput() {
-        return tankInput;
-    }
-
-    public void setTankInput(int tankInput) {
-        this.tankInput = tankInput;
-    }
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getDemand() {
+    public Integer getDemand() {
         return demand;
     }
 
-    public void setDemand(int demand) {
+    public void setDemand(Integer demand) {
         this.demand = demand;
     }
 
-    public int getNumHouse() {
+    public Integer getNumHouse() {
         return numHouse;
     }
 
-    public void setNumHouse(int numHouse) {
+    public void setNumHouse(Integer numHouse) {
         this.numHouse = numHouse;
     }
 
@@ -65,21 +48,39 @@ public class ZoneData {
         this.topic = topic;
     }
 
-    public int getActive() {
+    public Integer getTankInput() {
+        return tankInput;
+    }
+
+    public void setTankInput(Integer tankInput) {
+        this.tankInput = tankInput;
+    }
+
+    public Integer getTankOutput() {
+        return tankOutput;
+    }
+
+    public void setTankOutput(Integer tankOutput) {
+        this.tankOutput = tankOutput;
+    }
+
+    public Integer getActive() {
         return active;
     }
 
-    public void setActive(int active) {
+    public void setActive(Integer active) {
         this.active = active;
     }
 
-    public int getTank_level() {
+    public Integer getTank_level() {
         return tank_level;
     }
 
-    public void setTank_level(int tank_level) {
+    public void setTank_level(Integer tank_level) {
         this.tank_level = tank_level;
     }
-    private int active;
-    private int tank_level;
+
+    private Integer tankOutput;
+    private Integer active;
+    private Integer tank_level;
 }

@@ -11,6 +11,7 @@ public class ConsumptionAdaptation extends TimerTask {
     public void run() {
         ZoneService service = new ZoneServiceImpl();
         service.consumptionAdaptation();
+        service.setMaintainance();
     }
 
 }

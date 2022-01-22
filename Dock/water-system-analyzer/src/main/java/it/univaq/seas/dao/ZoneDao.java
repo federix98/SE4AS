@@ -5,6 +5,8 @@
  */
 package it.univaq.seas.dao;
 
+import it.univaq.seas.model.ZoneData;
+
 import java.util.Date;
 import java.util.List;
 
@@ -43,5 +45,7 @@ public interface ZoneDao {
     public List<String> getAllZoneNameThatAreSendInformatioUpto(Date date);
     
     public int checkConsumptionAdaptation();
-    
+
+    public List<ZoneData> getZoneData();
+
 }

@@ -50,7 +50,7 @@ public class ZoneDaoImpl implements ZoneDao {
 
         InfluxDB influxDBConnection = InfluxDBFactory.connect(serverURL, username, password);
 
-        String command = "SELECT last(*) FROM zone GROUP BY topic";
+        String command = "SELECT last(*) FROM zone WHERE time >= now() - 7d GROUP BY topic";
 
         System.out.println(command);
         Query query = new Query(command, "telegraf");
@@ -68,7 +68,7 @@ public class ZoneDaoImpl implements ZoneDao {
 
                 int zoneId = intcast(tuple.get(10));
                 if(zoneId != 0) {
-                    localZone.setActive(intcast(tuple.get(2)));
+                    localZone.setActive(intcast(tuple.get(1)));
                     localZone.setDemand(intcast(tuple.get(9)));
                     localZone.setId(zoneId);
                     localZone.setTopic(serie.getTags().get("topic"));
@@ -78,11 +78,6 @@ public class ZoneDaoImpl implements ZoneDao {
 
                     zones.add(localZone);
                 }
-
-
-
-
-
 
             }
         }

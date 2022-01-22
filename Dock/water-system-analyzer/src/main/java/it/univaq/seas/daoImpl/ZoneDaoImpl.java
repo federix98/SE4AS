@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import it.univaq.seas.model.ZoneData;
 import org.influxdb.InfluxDB;
 import org.influxdb.InfluxDBFactory;
 import org.influxdb.dto.Query;
@@ -202,6 +203,48 @@ public class ZoneDaoImpl implements ZoneDao {
             }
         }
         return 0;
+    }
+
+    @Override
+    public List<ZoneData> getZoneData() {
+
+        InfluxDB influxDBConnection = InfluxDBFactory.connect(serverURL, username, password);
+
+        String command = "SELECT last(*) FROM zone WHERE zoneId != 0 AND time >= now() - 7d GROUP BY topic";
+
+        System.out.println(command);
+        Query query = new Query(command, "telegraf");
+
+        List<String> topics = new ArrayList<>();
+
+        QueryResult queryResult = influxDBConnection.query(query);
+
+        List<ZoneData> zones = new ArrayList<ZoneData>();
+        for(Result series : queryResult.getResults()) {
+            for (Series serie : series.getSeries()) {
+                List<Object> tuple = serie.getValues().get(0);
+                System.out.println(tuple);
+                ZoneData localZone = new ZoneData();
+
+                int zoneId = intcast(tuple.get(10));
+                if(zoneId != 0) {
+                    localZone.setActive(intcast(tuple.get(1)));
+                    localZone.setDemand(intcast(tuple.get(9)));
+                    localZone.setId(zoneId);
+                    localZone.setTopic(serie.getTags().get("topic"));
+                    localZone.setNumHouse(intcast(tuple.get(3)));
+                    localZone.setTank_level(intcast(tuple.get(6)));
+                    localZone.setTankInput(intcast(tuple.get(7)));
+                    localZone.setTankOutput(intcast(tuple.get(8)));
+
+                    zones.add(localZone);
+                }
+
+            }
+        }
+
+        return zones;
+
     }
 
     private Integer intcast(Object var) {

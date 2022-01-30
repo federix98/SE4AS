@@ -5,6 +5,7 @@
  */
 package it.univaq.seas.daoImpl;
 
+import it.univaq.seas.utils.Utils;
 import org.influxdb.InfluxDB;
 import org.influxdb.InfluxDBFactory;
 
@@ -21,7 +22,7 @@ public class InfluxdbConnection {
     protected InfluxDB influxDBConnection;
 
     public InfluxdbConnection() {
-        String serverURL = urlLocalhost, username = "telegraf", password = "secretpassword";
+        String serverURL = (Utils.dockerized) ? urlDocker : urlLocalhost, username = "telegraf", password = "secretpassword";
         this.influxDBConnection = InfluxDBFactory.connect(serverURL, username, password);
     }
 

@@ -32,28 +32,47 @@ services:
       - iot
 
   
-  # water-system-analyzer:
-  #   image: water-system-analyzer
-  #   container_name: MAPE_ANALYZER
-  #   build:
-  #     context: ./water-system-analyzer/
-  #     dockerfile: Dockerfile
-  #   volumes:
-  #     - /data/water-system-analyzer
-  #   depends_on:
-  #     - mosquitto
-  #     - influxdb
-  #   networks:
-  #     - iot
+  water-system-analyzer:
+    image: water-system-analyzer
+    restart: always
+    container_name: MAPE_ANALYZER
+    build:
+      context: ./water-system-analyzer/
+      dockerfile: Dockerfile
+    volumes:
+      - /data/water-system-analyzer
+    depends_on:
+      - mosquitto
+      - influxdb
+    networks:
+      - iot
+
+  water-system-planner:
+    image: water-system-planner
+    container_name: MAPE_PLANNER
+    build:
+      context: ./water-system-planner/
+      dockerfile: Dockerfile
+    volumes:
+      - /data/water-system-planner
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mosquitto
+      - influxdb
+    networks:
+      - iot
 
   # water-system-planner:
-  #   image: water-system-planner
-  #   container_name: MAPE_PLANNER
+  #   image: water-system-planner-advanced
+  #   container_name: MAPE_PLANNER_PROACTIVE
+  #   #profiles:
+  #   #  - donotstart
   #   build:
-  #     context: ./water-system-planner/
+  #     context: ./water-system-planner-advanced/
   #     dockerfile: Dockerfile
   #   volumes:
-  #     - /data/water-system-planner
+  #     - /data/water-system-planner-advanced
   #   ports:
   #     - "8081:8081"
   #   depends_on:
@@ -62,19 +81,19 @@ services:
   #   networks:
   #     - iot
 
-  # water-system-executor:
-  #   image: water-system-executor
-  #   container_name: MAPE_EXECUTOR
-  #   build:
-  #     context: ./water-system-executor/
-  #     dockerfile: Dockerfile
-  #   volumes:
-  #     - /data/water-system-executor
-  #   depends_on:
-  #     - mosquitto
-  #     - influxdb
-  #   networks:
-  #     - iot
+  water-system-executor:
+    image: water-system-executor
+    container_name: MAPE_EXECUTOR
+    build:
+      context: ./water-system-executor/
+      dockerfile: Dockerfile
+    volumes:
+      - /data/water-system-executor
+    depends_on:
+      - mosquitto
+      - influxdb
+    networks:
+      - iot
 
 
 
@@ -96,7 +115,7 @@ services:
   # INFLUXDB - KNOWLEDGE
   influxdb:
     image: influxdb:1.8
-    container_name: influxdb_container
+    container_name: KNOWLEDGE
     restart: always
     ports:
       - "8086:8086"

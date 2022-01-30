@@ -14,7 +14,9 @@ import it.univaq.seas.model.SymptomsMessage;
  * @author valerio
  */
 public class Utils {
-    
+
+    public static boolean dockerized = true;
+
     public static String convertMessageToJSONString(SymptomsMessage message){
         ObjectMapper objectMapper = new ObjectMapper();
         try {

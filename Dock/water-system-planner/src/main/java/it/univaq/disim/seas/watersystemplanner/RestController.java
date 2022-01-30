@@ -9,6 +9,7 @@ import it.univaq.disim.seas.watersystemplanner.controller.WaterService;
 import it.univaq.disim.seas.watersystemplanner.daoImpl.ZoneDaoImpl;
 import it.univaq.disim.seas.watersystemplanner.dto.AdaptationMessageDTO;
 import it.univaq.disim.seas.watersystemplanner.model.ZoneData;
+import it.univaq.disim.seas.watersystemplanner.model.ZoneDataRegression;
 import it.univaq.disim.seas.watersystemplanner.model.ZoneParameter;
 import it.univaq.disim.seas.watersystemplanner.model.ZoneUpdate;
 import it.univaq.disim.seas.watersystemplanner.utils.Utils;
@@ -28,7 +29,7 @@ import java.util.List;
 @org.springframework.web.bind.annotation.RestController
 public class RestController {
 
-    private boolean DOCKERIZE = false;
+    private boolean DOCKERIZE = true;
 
     @GetMapping("/")
     public String greeting() {
@@ -85,6 +86,7 @@ public class RestController {
             ZoneData local = new ZoneData();
             local.setId(res.getId());
             local.setActive(res.getActive());
+            local.setTankInput((res.getTankInput()));
             local.setTopic(res.getTopic());
             toWrite.add(local);
         }
@@ -97,6 +99,35 @@ public class RestController {
         return "Maintenance adaptation planned";
     }
 
+    @PostMapping("/maintenancepred")
+    public String maintenancePredAdaptation(@RequestBody AdaptationMessageDTO message) {
+
+        // Retrieve zone data
+        List<ZoneDataRegression> zones = new ZoneDaoImpl().getZoneDataRegression();
+        int mainBaseWater = message.getAlertValue();
+
+        System.out.println(mainBaseWater);
+
+        List<ZoneData> results = WaterService.waterConsumptionPredPolicy(zones, mainBaseWater);
+
+        List<ZoneData> toWrite = new ArrayList<ZoneData>();
+
+        for (ZoneData res : results) {
+            ZoneData local = new ZoneData();
+            local.setId(res.getId());
+            local.setTankOutput(res.getTankOutput());
+            local.setTopic(res.getTopic());
+            toWrite.add(local);
+        }
+
+        String jsonMessage = Utils.convertMessageToJSONString(toWrite);
+
+        System.out.println("WATER CONSUMPTION POLICY" + jsonMessage);
+
+        Utils.mqttPublish(jsonMessage, DOCKERIZE);
+
+        return "Consumption Adaptation planned";
+    }
 
 
 

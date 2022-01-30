@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import it.univaq.seas.utils.Utils;
 import org.apache.hc.client5.http.async.methods.SimpleBody;
 import org.apache.hc.client5.http.async.methods.SimpleHttpRequest;
 import org.apache.hc.client5.http.async.methods.SimpleHttpResponse;
@@ -28,6 +29,7 @@ public class SimpleHttpConnection {
     public static final String URLLOCAL = "http://localhost:8081/message";
 
     public static void invoke(String message) {
+        String URI = (Utils.dockerized) ? URLDOCKER : URLLOCAL;
         try (
                 CloseableHttpAsyncClient client =
                         HttpAsyncClients.createDefault();) {
@@ -36,7 +38,7 @@ public class SimpleHttpConnection {
             final SimpleHttpRequest request;
             request = SimpleRequestBuilder
                     .post()
-                    .setUri(URLLOCAL)
+                    .setUri(URI)
                     .setBody(message, ContentType.APPLICATION_JSON)
                     .build();
 
@@ -76,6 +78,7 @@ public class SimpleHttpConnection {
     }
 
     public static void invoke(String message, String url) {
+
         try (
                 CloseableHttpAsyncClient client =
                         HttpAsyncClients.createDefault();) {

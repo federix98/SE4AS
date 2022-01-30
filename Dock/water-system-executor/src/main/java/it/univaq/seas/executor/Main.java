@@ -8,6 +8,6 @@ public class Main {
 
     public static void main (String[] main) {
 
-        Executor executor = Executor.getInstance(false);
+        Executor executor = Executor.getInstance(true);
     }
 }

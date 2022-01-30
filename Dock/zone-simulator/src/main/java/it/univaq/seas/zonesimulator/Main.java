@@ -19,7 +19,9 @@ public class Main {
             zones.put("Zone3", new ZoneSimulator(3, "Zone3", 30, 35, 100, 100, 67, 400, 1));
             zones.put("Zone4", new ZoneSimulator(4, "Zone4", 60, 55, 50, 100, 450, 500, 1));
             zones.put("Zone5", new ZoneSimulator(5, "Zone5", 70, 65, 70, 100, 23, 400, 1));
-            zones.put("Zone6", new ZoneSimulator(6, "Zone6", 50, 95, 100, 100, 23, 400, 0));
+            //zones.put("Zone6", new ZoneSimulator(6, "Zone6", 50, 95, 87, 100, 23, 400, 1));
+            //zones.put("Zone7", new ZoneSimulator(7, "Zone7", 50, 95, 32, 100, 23, 400, 1));
+
         } catch (MqttException e) {
             e.printStackTrace();
         }

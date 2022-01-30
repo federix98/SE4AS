@@ -28,6 +28,8 @@ public class ZoneSimulator implements Runnable, MqttCallback {
 	private Integer numHouse = null;
 	private Integer squareMeters = null;
 	private Integer totalDemand = null;
+
+	private Integer NUM_INTERATIONS = 5;
 	
 	// Thread Data
 	private String zoneName = "";
@@ -82,9 +84,8 @@ public class ZoneSimulator implements Runnable, MqttCallback {
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();
 		}
-
-		//this.serverURI = DockerURL;
-		this.serverURI = LocalURL;
+		this.serverURI = DockerURL;
+		//this.serverURI = LocalURL;
 
 		this.totalDemand = calculateDemand();
 
@@ -241,7 +242,7 @@ public class ZoneSimulator implements Runnable, MqttCallback {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		
+		int i  = 0;
 		while(!this.stop) {
 			//int randomNum = ThreadLocalRandom.current().nextInt(0, 100);
 			JSONObject data = generateData(this);
@@ -262,8 +263,38 @@ public class ZoneSimulator implements Runnable, MqttCallback {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}*/
-			this.totalDemand = calculateDemand();
-			if (this.tankFillLevel > 0) this.tankFillLevel = this.tankFillLevel - (new Random().nextInt(3));
+
+			/*
+			i++;
+
+			if (i >= this.NUM_INTERATIONS) {
+				if (this.tankFillLevel > 0) this.tankFillLevel = this.tankFillLevel - (new Random().nextInt(3)) + (new Random().nextInt(3));
+
+				if (this.tankOutput > 0) this.tankOutput = this.tankOutput - (new Random().nextInt(3)) + (new Random().nextInt(3));
+
+				if (this.tankInput > 0) this.tankInput = this.tankInput - (new Random().nextInt(3)) + (new Random().nextInt(3));
+
+				i = 0;
+			}
+
+			 */
+
+			if (this.zoneId != 0) {
+				if (this.tankFillLevel > 10 && this.tankFillLevel < 90) this.tankFillLevel = this.tankFillLevel - (new Random().nextInt(3)) + (new Random().nextInt(3));
+
+				if (this.tankOutput > 10 && this.tankOutput < 90) this.tankOutput = this.tankOutput - (new Random().nextInt(3)) + (new Random().nextInt(3));
+
+				if (this.tankInput > 10 && this.tankInput < 90) this.tankInput = this.tankInput - (new Random().nextInt(3)) + (new Random().nextInt(3));
+
+
+
+				this.totalDemand = calculateDemand();
+			}
+
+
+
+
+
 		}
 		
 	}

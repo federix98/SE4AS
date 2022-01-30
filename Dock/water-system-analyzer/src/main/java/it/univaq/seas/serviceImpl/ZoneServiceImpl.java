@@ -27,7 +27,7 @@ public class ZoneServiceImpl implements ZoneService {
     private ZoneDao dao = new ZoneDaoImpl();
     private String DOCKERURL = "http://water-system-planner:8081/";
     private String LOCALURL = "http://localhost:8081/";
-    private Boolean DOCKERIZE = false;
+    private Boolean DOCKERIZE = Utils.dockerized;
 
     @Override
     public void checkTankLevelIsUpTo(int tankLevel) {
@@ -74,6 +74,7 @@ public class ZoneServiceImpl implements ZoneService {
          */
 
         String endpoint = "consumptionAdaptation";
+        //String endpoint = "maintenancepred";
         String Url = (DOCKERIZE) ? (DOCKERURL + endpoint) : (LOCALURL + endpoint);
 
         int val = dao.checkConsumptionAdaptation();

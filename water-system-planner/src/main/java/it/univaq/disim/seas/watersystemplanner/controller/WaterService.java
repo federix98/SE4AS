@@ -30,7 +30,7 @@ public class WaterService {
         Map<ZoneData, Integer> ottimaOutput = new HashMap<>();
         int CurrentTotalOutput = 0;
         for (ZoneDataRegression zone : zones) {
-            if (zone.getId() != 0) {
+            if (zone.getId() != 0 && zone.getActive() == 1) {
                 List<Integer> x = new ArrayList<Integer>();
                 for (int i : IntStream.range(0, zone.getHistoricDemandValues().size()).toArray()) x.add(i);
                 Integer predictedValue = (LinearRegressor.predictForValue(x, zone.getHistoricDemandValues(), zone.getHistoricDemandValues().size())).intValue();
@@ -48,7 +48,7 @@ public class WaterService {
 
         while (CurrentTotalOutput >= mainBaseWater) {
             for (ZoneData zone : zones) {
-                if (zone.getId() != 0) {
+                if (zone.getId() != 0 && zone.getActive() == 1) {
                     int requireOutput = ottimaOutput.get(zone);
                     //System.out.println(requireOutput);
                     int tolgo = 10;
@@ -116,7 +116,7 @@ public class WaterService {
         Map<ZoneData, Integer> ottimaOutput = new HashMap<>();
         int CurrentTotalOutput = 0;
         for (ZoneData zone : zones) {
-            if (zone.getId() != 0) {
+            if (zone.getId() != 0 && zone.getActive() == 1) {
                 ottimaOutput.put(zone, zone.getDemand() + (zone.getDemand() / 100 * 20));
                 CurrentTotalOutput += zone.getDemand() + (zone.getDemand() / 100 * 20);
                 System.out.println(CurrentTotalOutput);
@@ -130,7 +130,7 @@ public class WaterService {
 
         while (CurrentTotalOutput >= mainBaseWater) {
             for (ZoneData zone : zones) {
-                if (zone.getId() != 0) {
+                if (zone.getId() != 0 && zone.getActive() == 1) {
                     int requireOutput = ottimaOutput.get(zone);
                     //System.out.println(requireOutput);
                     int tolgo = 10;

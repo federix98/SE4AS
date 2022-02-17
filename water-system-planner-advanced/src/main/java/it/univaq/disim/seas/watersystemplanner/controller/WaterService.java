@@ -30,7 +30,7 @@ public class WaterService {
         Map<ZoneData, Integer> ottimaOutput = new HashMap<>();
         int CurrentTotalOutput = 0;
         for (ZoneDataRegression zone : zones) {
-            if (zone.getId() != 0) {
+            if (zone.getId() != 0 && zone.getActive() == 1) {
                 List<Integer> x = new ArrayList<Integer>();
                 for (int i : IntStream.range(0, zone.getHistoricDemandValues().size()).toArray()) x.add(i);
                 Integer predictedValue = (LinearRegressor.predictForValue(x, zone.getHistoricDemandValues(), zone.getHistoricDemandValues().size())).intValue();
@@ -48,7 +48,7 @@ public class WaterService {
 
         while (CurrentTotalOutput >= mainBaseWater) {
             for (ZoneData zone : zones) {
-                if (zone.getId() != 0) {
+                if (zone.getId() != 0 && zone.getActive() == 1) {
                     int requireOutput = ottimaOutput.get(zone);
                     //System.out.println(requireOutput);
                     int tolgo = 10;
@@ -109,82 +109,6 @@ public class WaterService {
         System.out.println(ottimaOutput.values().toString());
         System.out.println(ottimaOutput.size());
         return results;
-    }
-
-    public static List<ZoneData> waterConsumptionPolicy(List<ZoneData> zones, int mainBaseWater) {
-
-        Map<ZoneData, Integer> ottimaOutput = new HashMap<>();
-        int CurrentTotalOutput = 0;
-        for (ZoneData zone : zones) {
-            if (zone.getId() != 0) {
-                ottimaOutput.put(zone, zone.getDemand() + (zone.getDemand() / 100 * 20));
-                CurrentTotalOutput += zone.getDemand() + (zone.getDemand() / 100 * 20);
-                System.out.println(CurrentTotalOutput);
-            }
-
-        }
-
-        System.out.println("CIAOCIAO " + CurrentTotalOutput + " " + mainBaseWater);
-        System.out.println(ottimaOutput.values().toString());
-        System.out.println(ottimaOutput.size());
-
-        while (CurrentTotalOutput >= mainBaseWater) {
-            for (ZoneData zone : zones) {
-                if (zone.getId() != 0) {
-                    int requireOutput = ottimaOutput.get(zone);
-                    //System.out.println(requireOutput);
-                    int tolgo = 10;
-
-                    if (requireOutput > 10) {
-                        ottimaOutput.put(zone, requireOutput - tolgo);
-                        CurrentTotalOutput -= tolgo;
-
-                    }
-
-                    // TO FIX
-                    CurrentTotalOutput -= tolgo;
-
-                    System.out.println(requireOutput + " " + tolgo + " " + CurrentTotalOutput);
-
-                    if(CurrentTotalOutput <= mainBaseWater){
-                        break;
-                    }
-                }
-            }
-        }
-
-
-        //System.out.println(ottimaOutput.values().toString());
-        //System.out.println(ottimaOutput.size());
-        
-        for (ZoneData zone : zones) {
-           zone.setDemand(ottimaOutput.get(zone));
-        }
-
-
-        List<ZoneData> results = new ArrayList<ZoneData>();
-
-        /*
-        for (ZoneData zone : ottimaOutput.keySet()) {
-            ZoneUpdate local = new ZoneUpdate();
-            local.setNewTankOutput(ottimaOutput.get(zone));
-            local.setNewTankInput(0);
-            local.setZoneId(zone.getId());
-            local.setTopic(zone.getTopic());
-            results.add(local);
-        }*/
-
-        for (ZoneData zone : ottimaOutput.keySet()) {
-            ZoneData local = (ZoneData) cloneObject(zone);
-            local.setTankOutput(ottimaOutput.get(zone));
-            results.add(local);
-            System.out.println("OUTPUT TO SET " + local.getTankOutput());
-        }
-
-        System.out.println(ottimaOutput.values().toString());
-        System.out.println(ottimaOutput.size());
-        return results;
-
     }
 
     public static List<ZoneData> waterMaintainancePolicy(List<ZoneData> zones, List<String> topics) {
